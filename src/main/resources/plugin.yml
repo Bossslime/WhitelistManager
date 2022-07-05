@@ -1,0 +1,13 @@
+main: com.Bossslime.WhitelistManager.Main
+name: WhitelistManager
+author: Bossslime
+website: Bossslime.com
+description: A simple whitelist manager
+api-version: 1.13
+version: 1.0.0
+
+commands:
+  whitelistmanager:
+    description: Main command
+    aliases:
+      - wlm
