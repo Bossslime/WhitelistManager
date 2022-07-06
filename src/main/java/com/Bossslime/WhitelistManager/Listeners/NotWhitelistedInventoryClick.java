@@ -26,10 +26,10 @@ public class NotWhitelistedInventoryClick implements Listener {
         if (notWhitelistedMain.contains(e.getWhoClicked())) {
             e.setCancelled(true);
             Player p = (Player) e.getWhoClicked();
-            NotWhitelistedGUI inv = NotWhitelistedGUI.users.get(e.getWhoClicked().getUniqueId());
             if (e.getCurrentItem() == null) return;
             if (e.getCurrentItem().getItemMeta() == null) return;
             if (e.getCurrentItem().equals((Object) XMaterial.AIR.parseItem()) ) return;
+            NotWhitelistedGUI inv = NotWhitelistedGUI.users.get(e.getWhoClicked().getUniqueId());
             if(e.getCurrentItem().getItemMeta().getDisplayName().equals(Chat.color("&cNext Page"))){
                 //If there is no next page, don't do anything
                 if(inv.currpage >= inv.pages.size()-1){
