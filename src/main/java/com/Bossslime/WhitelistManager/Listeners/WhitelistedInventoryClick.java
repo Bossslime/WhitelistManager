@@ -37,6 +37,9 @@ public class WhitelistedInventoryClick implements Listener {
                 }else{
                     //Next page exists, flip the page
                     inv.currpage += 1;
+                    updateGUI(p);
+                    p.openInventory(WhitelistedGUI.users.get(p.getUniqueId()).pages.get(inv.currpage));
+                    WhitelistedInventoryClick.addPlayerToMainArray(p);
                 }
                 //if the pressed item was a previous page button
             }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(Chat.color("&cPrevious Page"))){
@@ -44,6 +47,10 @@ public class WhitelistedInventoryClick implements Listener {
                 if(inv.currpage > 0){
                     //Flip to previous page
                     inv.currpage -= 1;
+                    updateGUI(p);
+                    p.openInventory(WhitelistedGUI.users.get(p.getUniqueId()).pages.get(inv.currpage));
+                    WhitelistedInventoryClick.addPlayerToMainArray(p);
+
                 }
 
 
@@ -154,5 +161,27 @@ public class WhitelistedInventoryClick implements Listener {
 
     public static ArrayList getArray() {
         return whitelistedMain;
+    }
+
+
+    private static void updateGUI(Player p) {
+        ArrayList<ItemStack> array1 = new ArrayList<>();
+        for (OfflinePlayer pl : Bukkit.getWhitelistedPlayers()) {
+            ItemStack item = XMaterial.PLAYER_HEAD.parseItem();
+            SkullMeta meta = (SkullMeta) item.getItemMeta();
+            meta.setOwner(pl.getName());
+            meta.setDisplayName(Chat.color("&a" + pl.getName()));
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(Chat.color("&e" + pl.getName() + " &7is currently whitelisted."));
+            lore.add(Chat.color("&7 "));
+            lore.add(Chat.color("&cClick to remove from whitelist."));
+
+            meta.setLore(lore);
+            item.setItemMeta(meta);
+
+            array1.add(item);
+        }
+
+        new WhitelistedGUI().updateInv(array1, "WhitelistManager ⪼ {CurrentPageNumber}", p);
     }
 }

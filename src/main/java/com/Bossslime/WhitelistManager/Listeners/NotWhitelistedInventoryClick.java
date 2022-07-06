@@ -30,22 +30,28 @@ public class NotWhitelistedInventoryClick implements Listener {
             if (e.getCurrentItem() == null) return;
             if (e.getCurrentItem().getItemMeta() == null) return;
             if (e.getCurrentItem().equals((Object) XMaterial.AIR.parseItem()) ) return;
-            if (e.getCurrentItem().getItemMeta().getDisplayName().equals(Chat.color("&cNext Page"))){
+            if(e.getCurrentItem().getItemMeta().getDisplayName().equals(Chat.color("&cNext Page"))){
                 //If there is no next page, don't do anything
                 if(inv.currpage >= inv.pages.size()-1){
                     return;
                 }else{
                     //Next page exists, flip the page
                     inv.currpage += 1;
+                    updateGUI(p);
+                    p.openInventory(NotWhitelistedGUI.users.get(p.getUniqueId()).pages.get(inv.currpage));
+                    NotWhitelistedInventoryClick.addPlayerToMainArray(p);
                 }
                 //if the pressed item was a previous page button
-            }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(Chat.color("&cPrevious Page"))){
+            }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(Chat.color("&cPrevious Page"))) {
                 //If the page number is more than 0 (So a previous page exists)
-                if(inv.currpage > 0){
+                if (inv.currpage > 0) {
                     //Flip to previous page
                     inv.currpage -= 1;
-                }
+                    updateGUI(p);
+                    p.openInventory(NotWhitelistedGUI.users.get(p.getUniqueId()).pages.get(inv.currpage));
+                    NotWhitelistedInventoryClick.addPlayerToMainArray(p);
 
+                }
 
 
             }else if (e.getCurrentItem().getType().equals((Object) XMaterial.PLAYER_HEAD.parseMaterial())) {
@@ -132,5 +138,50 @@ public class NotWhitelistedInventoryClick implements Listener {
 
     public static ArrayList getArray() {
         return notWhitelistedMain;
+    }
+
+
+
+    private static void updateGUI(Player p) {
+        ArrayList<ItemStack> array1 = new ArrayList<>();
+        for (OfflinePlayer pl : Bukkit.getOfflinePlayers()) {
+            if (!pl.isWhitelisted()) {
+                ItemStack item = XMaterial.PLAYER_HEAD.parseItem();
+                SkullMeta meta = (SkullMeta) item.getItemMeta();
+                meta.setOwner(pl.getName());
+                meta.setDisplayName(Chat.color("&a" + pl.getName()));
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(Chat.color("&e" + pl.getName() + " &7is not whitelisted."));
+                lore.add(Chat.color("&7 "));
+                lore.add(Chat.color("&aClick to add to whitelist."));
+
+                meta.setLore(lore);
+                item.setItemMeta(meta);
+
+                if (!array1.contains(item)) {
+                    array1.add(item);
+                }
+            }
+        }
+        for (Player pl : Bukkit.getOnlinePlayers()) {
+            if (!pl.isWhitelisted()) {
+                ItemStack item = XMaterial.PLAYER_HEAD.parseItem();
+                SkullMeta meta = (SkullMeta) item.getItemMeta();
+                meta.setOwner(pl.getName());
+                meta.setDisplayName(Chat.color("&a" + pl.getName()));
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(Chat.color("&e" + pl.getName() + " &7is not whitelisted."));
+                lore.add(Chat.color("&7 "));
+                lore.add(Chat.color("&aClick to add to whitelist."));
+
+                meta.setLore(lore);
+                item.setItemMeta(meta);
+
+                if (!array1.contains(item)) {
+                    array1.add(item);
+                }
+            }
+        }
+        new NotWhitelistedGUI().updateInv(array1, "WhitelistManager ⪼ {CurrentPageNumber}", p);
     }
 }
