@@ -27,6 +27,7 @@ public class WhitelistedGUI {
     public void updateInv(ArrayList<ItemStack> items, String name, Player p) {
         //create new blank page
         Inventory page = getBlankPage(name, p);
+        currpage = users.get(p.getUniqueId()).currpage;
 
         //Get Max Page
         maxpage = getMaxPage(items);
@@ -36,6 +37,13 @@ public class WhitelistedGUI {
         for(int i = 0;i < items.size(); i++){
             //If the current page is full, add the page to the inventory's pages arraylist, and create a new page to add the items.
             if(page.firstEmpty() == -1){
+                int slot = 0;
+                for (ItemStack item : page.getContents()) {
+
+                    page.remove(XMaterial.matchXMaterial("GRAY_STAINED_GLASS_PANE").get().parseItem());
+                    slot = slot + 1;
+
+                }
                 pages.add(page);
                 page = getBlankPage(name, p);
                 page.addItem(items.get(i));
@@ -52,7 +60,6 @@ public class WhitelistedGUI {
 
         }
         pages.add(page);
-        currpage = users.get(p.getUniqueId()).currpage;
         users.put(p.getUniqueId(), this);
     }
 
@@ -68,6 +75,13 @@ public class WhitelistedGUI {
         for(int i = 0;i < items.size(); i++){
             //If the current page is full, add the page to the inventory's pages arraylist, and create a new page to add the items.
             if(page.firstEmpty() == -1){
+                int slot = 0;
+                for (ItemStack item : page.getContents()) {
+
+                    page.remove(XMaterial.matchXMaterial("GRAY_STAINED_GLASS_PANE").get().parseItem());
+                    slot = slot + 1;
+
+                }
                 pages.add(page);
                 page = getBlankPage(name, p);
                 page.addItem(items.get(i));
@@ -153,6 +167,20 @@ public class WhitelistedGUI {
                 case 24:
                 case 25:
                 case 26:
+
+
+                case 27:
+                    if (currpage > 0) {
+                        page.setItem(27, prevpage);
+                    }else {
+                        page.setItem(27, XMaterial.matchXMaterial("GRAY_STAINED_GLASS_PANE").get().parseItem());
+                    }
+                case 35:
+                    if (currpage < pages.size() - 1) {
+                        page.setItem(35, nextpage);
+                    }else {
+                        page.setItem(35, XMaterial.matchXMaterial("GRAY_STAINED_GLASS_PANE").get().parseItem());
+                    }
 
                 case 28: // Enable/Disable whitelist button
                     if (Bukkit.hasWhitelist()) {
@@ -266,20 +294,14 @@ public class WhitelistedGUI {
             }
             page.setItem(i, XMaterial.matchXMaterial("GRAY_STAINED_GLASS_PANE").get().parseItem());
         }
-
-        if (currpage > 0) {
-            page.setItem(27, prevpage);
-        }else if (currpage < maxpage) {
-            page.setItem(35, nextpage);
-        }
         return page;
     }
 
 
     private static int getMaxPage(List<ItemStack> list) {
-        int maxPage = 1;
+        int maxPage = 0;
         int amount = list.size();
-        for (; amount > 45; amount -= 45, maxPage++) {}
+        for (; amount > 27; amount -= 27, maxPage++) {}
         return maxPage;
     }
 }

@@ -45,7 +45,6 @@ public class WhitelistedGUIUpdater implements Runnable {
 
                 new WhitelistedGUI().updateInv(array1, "WhitelistManager ⪼ {CurrentPageNumber}", p);
                 Inventory inv = WhitelistedGUI.users.get(p.getUniqueId()).pages.get(WhitelistedGUI.users.get(p.getUniqueId()).currpage);
-
                 Main.getInstance().getServer().getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
                     for (int i = 0; i < inv.getSize(); i++) {
                         if (WhitelistedInventoryClick.getArray().contains(p)) {

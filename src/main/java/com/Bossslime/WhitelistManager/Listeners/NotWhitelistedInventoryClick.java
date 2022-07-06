@@ -37,7 +37,6 @@ public class NotWhitelistedInventoryClick implements Listener {
                 }else{
                     //Next page exists, flip the page
                     inv.currpage += 1;
-                    e.getWhoClicked().openInventory(inv.pages.get(inv.currpage));
                 }
                 //if the pressed item was a previous page button
             }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(Chat.color("&cPrevious Page"))){
@@ -45,7 +44,6 @@ public class NotWhitelistedInventoryClick implements Listener {
                 if(inv.currpage > 0){
                     //Flip to previous page
                     inv.currpage -= 1;
-                    e.getWhoClicked().openInventory(inv.pages.get(inv.currpage));
                 }
 
 
