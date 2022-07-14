@@ -15,6 +15,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 
 public class WhitelistManagerCommand implements CommandExecutor {
+
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
